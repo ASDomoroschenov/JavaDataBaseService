@@ -10,10 +10,12 @@ RUN apt-get update && \
     libgl1-mesa-glx \
     libgl1-mesa-dri \
     mesa-utils \
+    netcat \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . /app
+RUN chmod +x wait-for-it.sh
 
 RUN mvn clean package
 
-CMD ["java", "-jar", "target/java-database-service.jar"]
+CMD ["/app/wait-for-it.sh", "database:5432", "--", "java", "-jar", "target/java-database-service.jar"]
