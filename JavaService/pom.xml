@@ -16,7 +16,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <javafx.version>21-ea+24</javafx.version>
         <javafx.plugin.version>0.0.8</javafx.plugin.version>
-        <main.class>ru.mai.javaservice.Main</main.class>
+        <main.class>ru.mai.javaservice.app.Main</main.class>
         <spring.framework>5.3.27</spring.framework>
         <postgres.version>42.2.16</postgres.version>
     </properties>

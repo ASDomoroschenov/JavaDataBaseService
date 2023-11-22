@@ -1,4 +1,4 @@
-package ru.mai.javaservice;
+package ru.mai.javaservice.person;
 
 import org.springframework.jdbc.core.RowMapper;
 

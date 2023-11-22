@@ -1,4 +1,4 @@
-package ru.mai.javaservice;
+package ru.mai.javaservice.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("ru.mai")
-@PropertySource("classpath:database.properties")
+@PropertySource("classpath:database-localhost.properties")
 public class AppConfig {
     @Autowired
     Environment environment;

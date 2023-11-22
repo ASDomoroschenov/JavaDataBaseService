@@ -2,13 +2,13 @@ package ru.mai.javaservice;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.mai.javaservice.app.AppConfig;
+import ru.mai.javaservice.person.Person;
+import ru.mai.javaservice.person.PersonDAO;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
