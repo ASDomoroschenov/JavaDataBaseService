@@ -13,4 +13,8 @@ module ru.mai.javadatabaseservice {
     opens ru.mai.javaservice.person to javafx.fxml, spring.core;
     exports ru.mai.javaservice.app;
     opens ru.mai.javaservice.app to javafx.fxml, spring.core;
+    exports ru.mai.javaservice.professor;
+    opens ru.mai.javaservice.professor to javafx.fxml, spring.core;
+    exports ru.mai.javaservice.student;
+    opens ru.mai.javaservice.student to javafx.fxml, spring.core;
 }
