@@ -1,9 +1,10 @@
-FROM maven:3.8.1-openjdk-17-slim
+FROM openjdk:17-slim
 
 WORKDIR /app
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    maven \
     openjfx \
     libcanberra-gtk-module \
     libcanberra-gtk3-module \
@@ -14,6 +15,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . /app
+RUN tr -d '\r' < /app/wait-for-it.sh > /app/wait-for-it-unix.sh && mv /app/wait-for-it-unix.sh /app/wait-for-it.sh
 RUN chmod +x wait-for-it.sh
 
 RUN mvn clean package
