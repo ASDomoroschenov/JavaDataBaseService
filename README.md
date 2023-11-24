@@ -8,4 +8,4 @@ sudo lsof -i :5432
 You also need to enter one more command  
 xhost +local:docker  
 # Windows  
--
+Depends on configuration  
