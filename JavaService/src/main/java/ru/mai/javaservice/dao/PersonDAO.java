@@ -1,4 +1,6 @@
-package ru.mai.javaservice.person;
+package ru.mai.javaservice.dao;
+
+import ru.mai.javaservice.person.Person;
 
 import java.util.List;
 

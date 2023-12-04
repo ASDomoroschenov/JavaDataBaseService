@@ -1,8 +1,11 @@
-package ru.mai.javaservice.person;
+package ru.mai.javaservice.dao_impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.mai.javaservice.dao.PersonDAO;
+import ru.mai.javaservice.person.Person;
+import ru.mai.javaservice.mappers.PersonMapper;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -10,11 +13,11 @@ import java.util.List;
 @Component
 public class PersonDAOImpl implements PersonDAO {
     JdbcTemplate jdbcTemplate;
-    private final String SQL_FIND_PERSON = "select * from application_schema.person where person_id = ?";
-    private final String SQL_DELETE_PERSON = "delete from application_schema.person where person_id = ?";
-    private final String SQL_UPDATE_PERSON = "update application_schema.person set first_name = ?, last_name = ? where person_id = ?";
-    private final String SQL_GET_ALL = "select * from application_schema.person";
-    private final String SQL_INSERT_PERSON = "insert into application_schema.person(first_name, last_name, birthday, mail, gender) values(?,?,?,?,?)";
+    private final String SQL_FIND_PERSON = "SELECT * FROM application_schema.person WHERE person_id = ?";
+    private final String SQL_DELETE_PERSON = "DELETE FROM application_schema.person WHERE person_id = ?";
+    private final String SQL_UPDATE_PERSON = "UPDATE application_schema.person SET first_name = ?, last_name = ? WHERE person_id = ?";
+    private final String SQL_GET_ALL = "SELECT * FROM application_schema.person";
+    private final String SQL_INSERT_PERSON = "INSERT INTO application_schema.person(first_name, last_name, birthday, mail, gender) VALUES(?,?,?,?,?)";
 
     @Autowired
     public PersonDAOImpl(DataSource dataSource) {
@@ -23,7 +26,7 @@ public class PersonDAOImpl implements PersonDAO {
 
     @Override
     public Person getPersonById(Long id) {
-        return jdbcTemplate.queryForObject(SQL_FIND_PERSON, new Object[]{id}, new PersonMapper());
+        return (Person) jdbcTemplate.query(SQL_FIND_PERSON, new PersonMapper());
     }
 
     @Override

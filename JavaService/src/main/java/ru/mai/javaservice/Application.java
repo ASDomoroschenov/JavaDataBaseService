@@ -3,6 +3,7 @@ package ru.mai.javaservice;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.mai.javaservice.controllers.Controller;
 
 import java.io.IOException;
 

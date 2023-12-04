@@ -1,4 +1,4 @@
-package ru.mai.javaservice.app;
+package ru.mai.javaservice.app_config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,15 +12,14 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("ru.mai")
-@PropertySource("classpath:database-localhost.properties")
+@PropertySource(value = "classpath:application.properties")
 public class AppConfig {
     @Autowired
     Environment environment;
-
-    private final String URL = "url";
-    private final String USER = "dbuser";
-    private final String DRIVER = "driver";
-    private final String PASSWORD = "dbpassword";
+    private final String URL = "database.url.docker";
+    private final String USER = "database.user";
+    private final String DRIVER = "database.driver";
+    private final String PASSWORD = "database.password";
 
     @Bean
     DataSource dataSource() {

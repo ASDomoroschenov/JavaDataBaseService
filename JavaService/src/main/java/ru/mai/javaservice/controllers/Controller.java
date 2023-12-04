@@ -1,34 +1,32 @@
-package ru.mai.javaservice;
+package ru.mai.javaservice.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+import ru.mai.javaservice.Application;
+import ru.mai.javaservice.app_config.AppConfig;
 
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Component
-public class Controller implements Initializable {
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
+public class Controller {
     public void authorizationStudent() throws IOException {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
         Stage stageStudent = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("professor-service-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("student-service-view.fxml"));
+        fxmlLoader.setController(context.getBean("studentController"));
         Scene scene = new Scene(fxmlLoader.load(), 900, 500);
         stageStudent.setResizable(false);
         stageStudent.setTitle("Студент");
         stageStudent.setScene(scene);
         stageStudent.show();
+
+        context.close();
     }
 
     public void authorizationProfessor() throws IOException {
