@@ -1,17 +1,13 @@
 package ru.mai.javaservice.dao;
 
-import ru.mai.javaservice.person.Person;
+import ru.mai.javaservice.objects_database.Person;
 
-import java.util.List;
+import java.sql.Date;
 
 public interface PersonDAO {
-    Person getPersonById(Long id);
+    Person getPerson(String firstName, String lastName, Date birthday, String gender);
 
-    List<Person> getAllPersons();
+    boolean exist(String firstName, String lastName, Date birthday, String gender);
 
-    boolean deletePerson(Person person);
-
-    boolean updatePerson(Person person);
-
-    boolean createPerson(Person person);
+    String personRole(Person person);
 }

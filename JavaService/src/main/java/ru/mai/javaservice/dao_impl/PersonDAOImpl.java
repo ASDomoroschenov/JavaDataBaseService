@@ -4,48 +4,81 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.mai.javaservice.dao.PersonDAO;
-import ru.mai.javaservice.person.Person;
+import ru.mai.javaservice.database_connection.DataBaseConnection;
 import ru.mai.javaservice.mappers.PersonMapper;
+import ru.mai.javaservice.objects_database.Person;
 
-import javax.sql.DataSource;
-import java.util.List;
+import java.sql.Date;
 
 @Component
 public class PersonDAOImpl implements PersonDAO {
     JdbcTemplate jdbcTemplate;
-    private final String SQL_FIND_PERSON = "SELECT * FROM application_schema.person WHERE person_id = ?";
-    private final String SQL_DELETE_PERSON = "DELETE FROM application_schema.person WHERE person_id = ?";
-    private final String SQL_UPDATE_PERSON = "UPDATE application_schema.person SET first_name = ?, last_name = ? WHERE person_id = ?";
-    private final String SQL_GET_ALL = "SELECT * FROM application_schema.person";
-    private final String SQL_INSERT_PERSON = "INSERT INTO application_schema.person(first_name, last_name, birthday, mail, gender) VALUES(?,?,?,?,?)";
+    private static final String GET_PERSON = """
+                SELECT *
+                FROM application_schema.person
+                WHERE first_name = ?
+                  AND last_name = ?
+                  AND birthday = ?
+                  AND gender = ?
+            """;
+    private static final String PERSON_EXIST = """
+                SELECT EXISTS (SELECT 1
+                               FROM application_schema.person
+                               WHERE first_name = ?
+                                 AND last_name = ?
+                                 AND birthday = ?
+                                 AND gender = ?);
+            """;
+    private static final String PERSON_ROLE = """
+                SELECT CASE
+                           WHEN application_schema.student.student_id IS NOT NULL THEN 'Студент'
+                           WHEN application_schema.professor.professor_id IS NOT NULL THEN 'Преподаватель'
+                           END AS role
+                FROM
+                    application_schema.person
+                    LEFT JOIN application_schema.student ON application_schema.person.person_id = application_schema.student.person_id
+                    LEFT JOIN application_schema.professor ON application_schema.person.person_id = application_schema.professor.person_id
+                WHERE application_schema.person.first_name = ?
+                  AND application_schema.person.last_name = ?
+                  AND application_schema.person.birthday = ?
+                  AND application_schema.person.gender = ?;
+            """;
 
     @Autowired
-    public PersonDAOImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public PersonDAOImpl(DataBaseConnection dataBaseConnection) {
+        jdbcTemplate = dataBaseConnection.getJdbcTemplate();
     }
 
     @Override
-    public Person getPersonById(Long id) {
-        return (Person) jdbcTemplate.query(SQL_FIND_PERSON, new PersonMapper());
+    public Person getPerson(String firstName, String lastName, Date birthday, String gender) {
+        return jdbcTemplate.queryForObject(
+                GET_PERSON,
+                new PersonMapper(),
+                firstName,
+                lastName,
+                birthday,
+                gender);
     }
 
     @Override
-    public List<Person> getAllPersons() {
-        return jdbcTemplate.query(SQL_GET_ALL, new PersonMapper());
+    public boolean exist(String firstName, String lastName, Date birthday, String gender) {
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
+                PERSON_EXIST,
+                Boolean.class,
+                firstName,
+                lastName,
+                birthday,
+                gender));
     }
 
     @Override
-    public boolean deletePerson(Person person) {
-        return jdbcTemplate.update(SQL_DELETE_PERSON, person.getId()) > 0;
-    }
-
-    @Override
-    public boolean updatePerson(Person person) {
-        return jdbcTemplate.update(SQL_UPDATE_PERSON, person.getFirstName(), person.getLastName(), person.getId()) > 0;
-    }
-
-    @Override
-    public boolean createPerson(Person person) {
-        return jdbcTemplate.update(SQL_INSERT_PERSON, person.getId(), person.getFirstName(), person.getLastName(), person.getBirthday(), person.getMail(), person.getGender()) > 0;
+    public String personRole(Person person) {
+        return jdbcTemplate.queryForObject(
+                PERSON_ROLE,
+                (resultSet, rowNum) -> resultSet.getString("role"),
+                person.getFirstName(),
+                person.getLastName(),
+                person.getBirthday(),
+                person.getGender());
     }
 }

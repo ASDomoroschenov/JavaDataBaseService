@@ -1,7 +1,7 @@
 package ru.mai.javaservice.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
-import ru.mai.javaservice.person.Person;
+import ru.mai.javaservice.objects_database.Person;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ public class PersonMapper implements RowMapper<Person> {
                 resultSet.getLong("person_id"),
                 resultSet.getString("first_name"),
                 resultSet.getString("last_name"),
-                resultSet.getString("birthday"),
+                resultSet.getDate("birthday"),
                 resultSet.getString("mail"),
                 resultSet.getString("gender"));
 

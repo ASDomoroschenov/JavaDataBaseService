@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane prefHeight="370.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox alignment="CENTER" layoutX="40.0" layoutY="71.0" AnchorPane.bottomAnchor="100.0"
+              AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="50.0">
+            <children>
+                <HBox alignment="CENTER">
+                    <children>
+                        <VBox alignment="TOP_RIGHT">
+                            <children>
+                                <Label text="Имя:">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" top="5.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="Фамилия:">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" left="-10.0" top="5.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="Дата рождения:">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" top="10.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="Пол:">
+                                    <VBox.margin>
+                                        <Insets top="5.0"/>
+                                    </VBox.margin>
+                                </Label>
+                            </children>
+                            <HBox.margin>
+                                <Insets left="-60.0" right="20.0"/>
+                            </HBox.margin>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <TextField fx:id="textFieldFirstName">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0"/>
+                                    </VBox.margin>
+                                </TextField>
+                                <TextField fx:id="textFieldLastName">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0"/>
+                                    </VBox.margin>
+                                </TextField>
+                                <TextField fx:id="textFieldBirthday">
+                                    <VBox.margin>
+                                        <Insets bottom="20.0"/>
+                                    </VBox.margin>
+                                </TextField>
+                                <RadioButton fx:id="maleGender" mnemonicParsing="false" text="Мужской">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0"/>
+                                    </VBox.margin>
+                                </RadioButton>
+                                <RadioButton fx:id="femaleGender" mnemonicParsing="false" text="Женский"/>
+                            </children>
+                            <HBox.margin>
+                                <Insets/>
+                            </HBox.margin>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <Button fx:id="buttonAuthorization" layoutX="119.0" layoutY="293.0" mnemonicParsing="false"
+                onAction="#authorization" prefHeight="44.0" prefWidth="210.0" text="Авторизоваться"/>
+        <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="Файл">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Настройки">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Помощь">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </children>
+</AnchorPane>

@@ -1,17 +1,19 @@
-package ru.mai.javaservice.person;
+package ru.mai.javaservice.objects_database;
 
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class Person {
     private Long id;
     private String firstName;
     private String lastName;
-    private String birthday;
+    private Date birthday;
     private String mail;
     private String gender;
 
-    public Person(Long id, String firstName, String lastName, String birthday, String mail, String gender) {
+    public Person(Long id, String firstName, String lastName, Date birthday, String mail, String gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

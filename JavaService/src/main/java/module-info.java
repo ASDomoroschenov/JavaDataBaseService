@@ -6,12 +6,11 @@ module ru.mai.javadatabaseservice {
     requires spring.core;
     requires spring.jdbc;
     requires java.sql;
+    requires org.apache.commons.lang3;
     requires static lombok;
 
     opens ru.mai.javaservice to spring.core, javafx.fxml;
     exports ru.mai.javaservice;
-    exports ru.mai.javaservice.person;
-    opens ru.mai.javaservice.person to javafx.fxml, spring.core;
     exports ru.mai.javaservice.app_config;
     opens ru.mai.javaservice.app_config to javafx.fxml, spring.core;
     exports ru.mai.javaservice.dao;
@@ -24,4 +23,8 @@ module ru.mai.javadatabaseservice {
     opens ru.mai.javaservice.controllers to javafx.fxml, spring.core;
     exports ru.mai.javaservice.app;
     opens ru.mai.javaservice.app to javafx.fxml, spring.core;
+    exports ru.mai.javaservice.objects_database;
+    opens ru.mai.javaservice.objects_database to javafx.fxml, spring.core;
+    exports ru.mai.javaservice.database_connection;
+    opens ru.mai.javaservice.database_connection to javafx.fxml, spring.core;
 }

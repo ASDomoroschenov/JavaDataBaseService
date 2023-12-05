@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import ru.mai.javaservice.controllers.ControllerAuthorizationView;
+import ru.mai.javaservice.dao.PersonDAO;
+import ru.mai.javaservice.dao_impl.PersonDAOImpl;
 
 import javax.sql.DataSource;
 
@@ -16,7 +19,7 @@ import javax.sql.DataSource;
 public class AppConfig {
     @Autowired
     Environment environment;
-    private final String URL = "database.url.docker";
+    private final String URL = "database.url.localhost";
     private final String USER = "database.user";
     private final String DRIVER = "database.driver";
     private final String PASSWORD = "database.password";
