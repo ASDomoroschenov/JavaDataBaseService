@@ -11,6 +11,7 @@ import ru.mai.javaservice.mappers.StudentMapper;
 import ru.mai.javaservice.objects_database.Person;
 import ru.mai.javaservice.objects_database.Student;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Component
@@ -59,6 +60,28 @@ public class StudentDAOImpl implements StudentDAO {
                 WHERE application_schema.student.student_id = ?
                   AND CEIL((application_schema.session.date_end - application_schema.group.start_date_studying) / (30.5 * 6)) = ?;
             """;
+    private static final String GET_AVG_GRADES = """
+                SELECT application_schema.subject.subject_name,
+                       AVG(application_schema.grade.grade) AS avg_grade
+                FROM application_schema.grade
+                JOIN application_schema.subject ON application_schema.grade.subject_id = application_schema.subject.subject_id
+                WHERE application_schema.grade.student_id = ?
+                GROUP BY application_schema.subject.subject_name;
+            """;
+    private static final String GET_LIST_SUBJECT_AND_PROFESSOR = """
+                SELECT application_schema.subject.subject_name AS subject_name,
+                       application_schema.person.first_name AS first_name,
+                       application_schema.person.last_name AS last_name
+                FROM application_schema.grade
+                JOIN application_schema.professor ON application_schema.grade.subject_id = application_schema.professor.professor_id
+                JOIN application_schema.subject ON application_schema.grade.subject_id = application_schema.subject.subject_id
+                JOIN application_schema.session ON application_schema.grade.session_id = application_schema.session.session_id
+                JOIN application_schema.student ON application_schema.grade.student_id = application_schema.student.student_id
+                JOIN application_schema.group ON application_schema.student.group_id = application_schema.group.group_id
+                JOIN application_schema.person ON application_schema.person.person_id = application_schema.professor.person_id
+                WHERE application_schema.student.student_id = ?
+                AND CEIL((application_schema.session.date_end - application_schema.group.start_date_studying) / (30.5 * 6)) = ?;
+            """;
 
     @Autowired
     public StudentDAOImpl(DataBaseConnection dataBaseConnection) {
@@ -103,6 +126,24 @@ public class StudentDAOImpl implements StudentDAO {
             String reportForm = resultSet.getString("reporting_from");
             String grade = resultSet.getString("grade");
             return Triple.of(subjectName, reportForm, grade);
+        }, student.getStudentId(), semester);
+    }
+
+    @Override
+    public List<Pair<String, String>> getAverageGrades(Student student) {
+        return jdbcTemplate.query(GET_AVG_GRADES, (resultSet, numRow) -> {
+            String avgGrade = String.valueOf(Math.round(resultSet.getDouble("avg_grade") * 100) / 100.0);
+            String subjectName = resultSet.getString("subject_name");
+            return Pair.of(subjectName, avgGrade);
+        }, student.getStudentId());
+    }
+
+    @Override
+    public List<Pair<String, String>> getListSubjectAndProfessor(Student student, int semester) {
+        return jdbcTemplate.query(GET_LIST_SUBJECT_AND_PROFESSOR, (resultSet, numRow) -> {
+            String nameSubject = resultSet.getString("subject_name");
+            String fullNameProfessor = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
+            return Pair.of(nameSubject, fullNameProfessor);
         }, student.getStudentId(), semester);
     }
 }

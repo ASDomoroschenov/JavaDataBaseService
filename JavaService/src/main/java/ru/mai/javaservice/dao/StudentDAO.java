@@ -19,4 +19,8 @@ public interface StudentDAO {
     Integer getCurrentSemester(Student student);
 
     List<Triple<String, String, String>> getSubjectListSemester(Student student, int semester);
+
+    List<Pair<String, String>> getAverageGrades(Student student);
+
+    List<Pair<String, String>> getListSubjectAndProfessor(Student student, int semester);
 }
