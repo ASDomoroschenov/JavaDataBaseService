@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 public class AppConfig {
     @Autowired
     Environment environment;
-    private final String URL = "database.url.localhost";
+    private final String URL = "database.url.docker";
     private final String USER = "database.user";
     private final String DRIVER = "database.driver";
     private final String PASSWORD = "database.password";

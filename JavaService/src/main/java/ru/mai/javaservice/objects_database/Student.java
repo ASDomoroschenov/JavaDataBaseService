@@ -16,6 +16,13 @@ public class Student {
         this.person = person;
     }
 
+    public Student(int groupId, boolean isMaster, Person person) {
+        this.studentId = 0;
+        this.groupId = groupId;
+        this.isMaster = isMaster;
+        this.person = person;
+    }
+
     @Override
     public String toString() {
         return "Student{" +

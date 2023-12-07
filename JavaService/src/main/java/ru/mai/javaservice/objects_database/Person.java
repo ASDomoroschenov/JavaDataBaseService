@@ -22,6 +22,15 @@ public class Person {
         this.gender = gender;
     }
 
+    public Person(String firstName, String lastName, Date birthday, String mail, String gender) {
+        this.id = 0L;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.mail = mail;
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return id + " " + firstName + " " + lastName + " " + birthday + " " + mail + " " + gender;

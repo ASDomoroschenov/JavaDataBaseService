@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.ls.LSOutput;
 import ru.mai.javaservice.Application;
 import ru.mai.javaservice.app_config.AppConfig;
 import ru.mai.javaservice.dao.PersonDAO;
@@ -44,9 +45,9 @@ public class ControllerAuthorizationView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        textFieldFirstName.setText("Александр");
-        textFieldLastName.setText("Доморощенов");
-        textFieldBirthday.setText("1989-02-09");
+        textFieldFirstName.setText("Илья");
+        textFieldLastName.setText("Ирбитский");
+        textFieldBirthday.setText("1995-10-12");
         maleGender.setSelected(true);
     }
 
@@ -77,6 +78,7 @@ public class ControllerAuthorizationView implements Initializable {
         Stage stage = new Stage();
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         FXMLLoader fxmlLoader = null;
+        Scene scene = null;
 
         if (role.equals("Студент")) {
             fxmlLoader = new FXMLLoader(Application.class.getResource("student-view.fxml"));
@@ -85,16 +87,17 @@ public class ControllerAuthorizationView implements Initializable {
             controllerStudentView.setStudent();
             fxmlLoader.setController(controllerStudentView);
             stage.setTitle("Студент");
+            scene = new Scene(fxmlLoader.load(), 580, 500);
         } else {
-            fxmlLoader = new FXMLLoader(Application.class.getResource("professors-view.fxml"));
+            fxmlLoader = new FXMLLoader(Application.class.getResource("professor-view.fxml"));
             ControllerProfessorView controllerProfessorView = context.getBean(ControllerProfessorView.class);
             controllerProfessorView.setPerson(person);
             controllerProfessorView.setProfessor();
             fxmlLoader.setController(controllerProfessorView);
             stage.setTitle("Преподаватель");
+            scene = new Scene(fxmlLoader.load(), 650, 500);
         }
 
-        Scene scene = new Scene(fxmlLoader.load(), 580, 500);
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();

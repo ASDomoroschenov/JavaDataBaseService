@@ -8,9 +8,7 @@ CREATE TABLE IF NOT EXISTS application_schema.person
     first_name VARCHAR(50) not null,
     last_name  VARCHAR(50) not null,
     birthday   DATE        not null,
-    mail       VARCHAR(50) not null
-        constraint person_uk
-            unique,
+    mail       VARCHAR(50) not null,
     gender     VARCHAR(50) not null
 );
 

@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class Professor {
     private int professorId;
-    private Person person;
+    private int person_id;
 
-    public Professor(int professorId, Person person) {
+    public Professor(int professorId, int person_id) {
         this.professorId = professorId;
-        this.person = person;
+        this.person_id = person_id;
     }
 }

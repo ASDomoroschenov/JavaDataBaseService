@@ -4,19 +4,25 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import ru.mai.javaservice.controllers.ControllerEditGradeView;
 import ru.mai.javaservice.dao.StudentDAO;
 import ru.mai.javaservice.database_connection.DataBaseConnection;
 import ru.mai.javaservice.mappers.StudentMapper;
 import ru.mai.javaservice.objects_database.Person;
 import ru.mai.javaservice.objects_database.Student;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
-@Component
+@Repository
 public class StudentDAOImpl implements StudentDAO {
     private final JdbcTemplate jdbcTemplate;
+    private static final String EXIST = """
+                SELECT EXISTS (SELECT 1
+                               FROM application_schema.student
+                               WHERE group_id = ?
+                                 AND person_id = ?);
+            """;
     private static final String SUBJECT_LIST = """
             SELECT subject_name
             FROM application_schema.student
@@ -82,10 +88,28 @@ public class StudentDAOImpl implements StudentDAO {
                 WHERE application_schema.student.student_id = ?
                 AND CEIL((application_schema.session.date_end - application_schema.group.start_date_studying) / (30.5 * 6)) = ?;
             """;
+    private static final String GET_GRADES = """
+                SELECT
+                    CEIL((application_schema.session.date_end - application_schema.group.start_date_studying) / (30.5 * 6)) AS semester,
+                    application_schema.subject.subject_name,
+                    application_schema.grade.grade
+                FROM application_schema.grade
+                JOIN application_schema.subject ON application_schema.grade.subject_id = application_schema.subject.subject_id
+                JOIN application_schema.session ON application_schema.grade.session_id = application_schema.session.session_id
+                JOIN application_schema.student ON application_schema.grade.student_id = application_schema.student.student_id
+                JOIN application_schema.group ON application_schema.student.group_id = application_schema.group.group_id
+                WHERE application_schema.student.student_id = ?
+                ORDER BY semester;
+            """;
 
     @Autowired
     public StudentDAOImpl(DataBaseConnection dataBaseConnection) {
         jdbcTemplate = dataBaseConnection.getJdbcTemplate();
+    }
+
+    @Override
+    public boolean exist(int groupId, Person person) {
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(EXIST, Boolean.class, groupId, person.getId()));
     }
 
     @Override
@@ -145,5 +169,14 @@ public class StudentDAOImpl implements StudentDAO {
             String fullNameProfessor = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
             return Pair.of(nameSubject, fullNameProfessor);
         }, student.getStudentId(), semester);
+    }
+
+    @Override
+    public List<ControllerEditGradeView.RowTableGrades> getGrades(Student student) {
+        return jdbcTemplate.query(GET_GRADES, (resultSet, rowNum) -> new ControllerEditGradeView.RowTableGrades(
+                resultSet.getString("semester"),
+                resultSet.getString("subject_name"),
+                resultSet.getString("grade")
+        ), student.getStudentId());
     }
 }
