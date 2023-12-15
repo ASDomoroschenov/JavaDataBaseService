@@ -69,6 +69,9 @@ CREATE TABLE IF NOT EXISTS application_schema.professor
 
 CREATE TABLE IF NOT EXISTS application_schema.subject_and_professor
 (
+    subject_and_professor_id BIGSERIAL not null
+    	constraint subject_and_professor_pk
+    	    primary key,
     professor_id BIGINT  not null
         constraint subject_and_professor_professor_professor_id_fk
             references application_schema.professor,
@@ -76,9 +79,7 @@ CREATE TABLE IF NOT EXISTS application_schema.subject_and_professor
         constraint subject_and_professor_subject_subject_id_fk
             references application_schema.subject,
     seminar      BOOLEAN not null,
-    lecture      BOOLEAN not null,
-    constraint subject_and_professor_pk
-        primary key (professor_id, subject_id)
+    lecture      BOOLEAN not null
 );
 
 CREATE TABLE IF NOT EXISTS application_schema.session
@@ -108,7 +109,7 @@ CREATE TABLE IF NOT EXISTS application_schema.grade
     session_id     BIGINT      not null
         constraint grade_session_session_id_fk
             references application_schema.session,
-    reporting_from VARCHAR(50) not null,
+    reporting_form VARCHAR(50) not null,
     grade          INTEGER     not null
 );
 
@@ -119,5 +120,5 @@ SELECT * FROM application_schema.group;
 \copy application_schema.session(date_begin, date_end, year) FROM 'csv/session.csv' DELIMITER ',' CSV
 \copy application_schema.student(group_id, is_master_group, person_id) FROM 'csv/student.csv' DELIMITER ',' CSV
 \copy application_schema.subject(subject_name, lecture_hours, practice_hours, lab_hours) FROM 'csv/subject.csv' DELIMITER ',' CSV
-\copy application_schema.subject_and_professor FROM 'csv/subject_and_professor.csv' DELIMITER ',' CSV
-\copy application_schema.grade(professor_id, student_id, subject_id, session_id, reporting_from, grade)  FROM 'csv/grade.csv' DELIMITER ',' CSV HEADER
+\copy application_schema.subject_and_professor(professor_id, subject_id, seminar, lecture) FROM 'csv/subject_and_professor.csv' DELIMITER ',' CSV
+\copy application_schema.grade(professor_id, student_id, subject_id, session_id, reporting_form, grade)  FROM 'csv/grade.csv' DELIMITER ',' CSV HEADER
