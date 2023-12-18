@@ -56,13 +56,13 @@ public class StudentDAOImpl implements StudentDAO {
     private static final String GET_SUBJECT_LIST_SEMESTER = """
                 SELECT
                     application_schema.subject.subject_name,
-                    application_schema.grade.reporting_from,
+                    application_schema.grade.reporting_form,
                     application_schema.grade.grade
                 FROM application_schema.grade
-                JOIN application_schema.subject ON application_schema.grade.subject_id = application_schema.subject.subject_id
-                JOIN application_schema.session ON application_schema.grade.session_id = application_schema.session.session_id
-                JOIN application_schema.student ON application_schema.grade.student_id = application_schema.student.student_id
-                JOIN application_schema.group ON application_schema.student.group_id = application_schema.group.group_id
+                         JOIN application_schema.subject ON application_schema.grade.subject_id = application_schema.subject.subject_id
+                         JOIN application_schema.session ON application_schema.grade.session_id = application_schema.session.session_id
+                         JOIN application_schema.student ON application_schema.grade.student_id = application_schema.student.student_id
+                         JOIN application_schema.group ON application_schema.student.group_id = application_schema.group.group_id
                 WHERE application_schema.student.student_id = ?
                   AND CEIL((application_schema.session.date_end - application_schema.group.start_date_studying) / (30.5 * 6)) = ?;
             """;
@@ -147,7 +147,7 @@ public class StudentDAOImpl implements StudentDAO {
     public List<Triple<String, String, String>> getSubjectListSemester(Student student, int semester) {
         return jdbcTemplate.query(GET_SUBJECT_LIST_SEMESTER, (resultSet, numRow) -> {
             String subjectName = resultSet.getString("subject_name");
-            String reportForm = resultSet.getString("reporting_from");
+            String reportForm = resultSet.getString("reporting_form");
             String grade = resultSet.getString("grade");
             return Triple.of(subjectName, reportForm, grade);
         }, student.getStudentId(), semester);
